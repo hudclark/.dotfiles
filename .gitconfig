@@ -1,0 +1,30 @@
+[core]
+	excludesfile = /home/hudson/.gitignore
+	editor = nvim.appimage
+[alias]
+	st = status
+	ch = checkout
+	cm = commit -m
+	brm = branch -m
+        recent = for-each-ref --sort=-committerdate refs/heads/
+[merge]
+  tool = vimdiff
+[mergetool]
+  prompt = true
+[mergetool "vimdiff"]
+  cmd = nvim.appimage -d $LOCAL $REMOTE  -c '$wincmd w'
+[user]
+	email = hudclark@umich.edu
+	name = hudclark
+[filesystem "GraalVM Community|11.0.7|/dev/mapper/vgubuntu-root"]
+	timestampResolution = 5000 nanoseconds
+	minRacyThreshold = 5227 microseconds
+[alias]
+lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+lg = !"git lg1"
+	conflicts = diff --name-only --diff-filter=U
+[diff "sopsdiffer"]
+	textconv = sops -d
+[init]
+	defaultBranch = main
