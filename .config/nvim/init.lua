@@ -52,6 +52,10 @@ require('packer').startup(function(use)
     end
   }
 
+  use 'L3MON4D3/LuaSnip'
+  use 'saadparwaiz1/cmp_luasnip'
+  use 'rafamadriz/friendly-snippets'
+
   use({
     "hrsh7th/nvim-cmp",
     requires = {
@@ -85,7 +89,12 @@ require('packer').startup(function(use)
     tag = 'nightly' -- optional, updated every week. (see issue #1193)
   }
 
-  use "ray-x/lsp_signature.nvim"
+  use 'simrat39/symbols-outline.nvim'
+
+  use {
+    'stevearc/aerial.nvim',
+    config = function() require('aerial').setup() end
+  }
 
 end)
 
@@ -182,6 +191,7 @@ require('telescope').setup({
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-p>', builtin.find_files, {noremap = true})
 vim.keymap.set('n', '<leader>ff', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fr', builtin.oldfiles, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>fb', builtin.current_buffer_fuzzy_find, {})
 
@@ -273,49 +283,79 @@ vim.keymap.set("i", "<c-k>", [[<cmd>lua require("cmp").complete()<CR>]], {norema
 vim.keymap.set("i", "<c-s>", [[<cmd>lua vim.lsp.buf.signature_help()<CR>]], {noremap = true})
 
 local has_words_before = function()
-  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  unpack = unpack or table.unpack
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match("^%s*$") == nil
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
+
+local luasnip = require("luasnip")
+
+luasnip.config.setup({
+  history = true,
+  updateevents = "TextChanged,TextChangedI",
+  enable_autosnippets = true,
+  ext_opts = {
+    [require("luasnip.util.types").choiceNode] = {
+      active = {
+        virt_text = { { "Choice", "Comment" } },
+      },
+    },
+  },
+})
+vim.keymap.set("i", "<c-h>", [[<cmd>lua require('luasnip').jump(-1)<CR>]], {noremap = true})
+vim.keymap.set("s", "<c-h>", [[<cmd>lua require('luasnip').jump(-1)<CR>]], {noremap = true})
+vim.keymap.set("i", "<c-l>", [[<cmd>lua require('luasnip').jump(1)<CR>]], {noremap = true})
+vim.keymap.set("s", "<c-l>", [[<cmd>lua require('luasnip').jump(1)<CR>]], {noremap = true})
+
+require("luasnip.loaders.from_vscode").lazy_load()
 
 local lspkind = require('lspkind')
 local cmp = require("cmp")
 cmp.setup({
-  sources = {
+  sources = cmp.config.sources({
+    { name = 'vsnip' },
     { name = "copilot" },
     { name = "nvim_lsp" },
+  }, {
     { name = "buffer", keyword_length = 4 },
-  },
+  }),
   window = {
     documentation = cmp.config.window.bordered()
   },
   snippet = {
     expand = function(args)
-      -- Comes from vsnip
-      vim.fn["vsnip#anonymous"](args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = {
-    -- ["<CR>"] = cmp.mapping.confirm({ select = true }),
-      ["<CR>"] = cmp.mapping.confirm({
-        -- this is the important line
-        behavior = cmp.ConfirmBehavior.Replace,
-        select = false,
-      }),
-    ["<Tab>"] = function(fallback)
+    ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
+      --elseif luasnip.expand_or_jumpable() then
+        --luasnip.expand_or_jump()
+      elseif has_words_before() then
+         cmp.complete()
       else
         fallback()
       end
-    end,
-    ["<S-Tab>"] = function(fallback)
+    end, { "i", "s" }),
+
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
+      --elseif luasnip.jumpable(-1) then
+        --luasnip.jump(-1)
       else
         fallback()
       end
-    end,
+    end, { "i", "s" }),
+
+    ["<CR>"] = cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace }),
+      --["<CR>"] = cmp.mapping.confirm({
+        -- this is the important line
+        --behavior = cmp.ConfirmBehavior.Replace,
+        --select = false,
+      --})
   },
   preselect = cmp.PreselectMode.None,
   formatting = {
@@ -436,9 +476,6 @@ require'nvim-treesitter.configs'.setup {
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = true,
 
-  -- List of parsers to ignore installing (for "all")
-  ignore_install = { "javascript" },
-
   ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
   -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
 
@@ -446,11 +483,6 @@ require'nvim-treesitter.configs'.setup {
     -- `false` will disable the whole extension
     enable = true,
 
-    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-    -- the name of the parser)
-    -- list of language that will be disabled
-    disable = { "c", "rust" },
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
         local max_filesize = 100 * 1024 -- 100 KB
@@ -486,12 +518,17 @@ require("nvim-tree").setup {
     mappings = {
       list = {
         { key = "i", action = "split" },
-        { key = "s", action = "vsplit" }
+        { key = "s", action = "vsplit" },
+        { key = "d", action = "trash" },
       }
     }
-  }
+  },
+  renderer = {
+    group_empty = true,
+  },
 }
 vim.keymap.set("n", "\\", "<cmd>NvimTreeToggle<CR>", {noremap = true})
+vim.keymap.set("n", "<c-\\>", "<cmd>NvimTreeFocus<CR>", {noremap = true})
 
 -- Golang config
 require'lspconfig'.gopls.setup{}
@@ -499,5 +536,4 @@ require'lspconfig'.gopls.setup{}
 -- LSP status messages
 require"fidget".setup{}
 
--- Signature help
-require "lsp_signature".setup({})
+require("symbols-outline").setup()
