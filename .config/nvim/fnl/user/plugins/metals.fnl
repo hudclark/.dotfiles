@@ -21,7 +21,9 @@
 ;; Enable metals LSP status
 (tset metals-config.init_options :statusBarProvider :on)
 
-(tset metals-config :settings {:showImplicitArguments true})
+(tset metals-config :settings {:showImplicitArguments true
+                               :showImplicitConversionsAndClasses true
+                               :showInferredType true})
 (tset metals-config :capabilities
       ((. (require :cmp_nvim_lsp) :default_capabilities)))
 
@@ -29,7 +31,7 @@
 (local nvim-metals-group
        (vim.api.nvim_create_augroup :nvim-metals {:clear true}))
 (vim.api.nvim_create_autocmd :FileType
-                             {:pattern [:scala :sbt :sc]
+                             {:pattern [:scala :sbt]
                               :callback #(metals.initialize_or_attach metals-config)
                               :group nvim-metals-group})
 

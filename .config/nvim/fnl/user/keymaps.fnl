@@ -12,7 +12,14 @@
                  [:n :<C-K> :<C-W><C-K>]
                  [:n :<C-L> :<C-W><C-L>]
                  [:n :<C-H> :<C-W><C-H>]
-                 [:n "_" ":sp<return>"]])
+                 [:n "_" ":sp<return>"]
+
+                 ;; Base64 decode: Replace selected text with base64 decoded version.
+                 ;; https://stackoverflow.com/a/40745410
+                 [:v :<C-b> "c<c-r>=system(\"base64 -d\", @\")<cr><esc>" ]
+
+                 ;; Break formatting
+                 ])
 
 (each [_ mapping (ipairs noremaps)]
   (match mapping

@@ -5,8 +5,9 @@
                    :highlight {:enable true
                                :addititional_vim_regex_highlighting false}
 
-                   :incremental_selection {:enable true
-                                           :keymaps {:init_selection :<CR>
-                                                     :scope_incremental :<CR>
-                                                     :node_incremental :<Tab>
-                                                     :node_decremental :<S-Tab>}}})
+                   ;; RRethy/nvim-treesitter-textsubjects
+                   :textsubjects {:enable false
+                                  :prev_selection ","
+                                  :keymaps {"." :textsubjects-smart
+                                            ";" :textsubjects-container-outer
+                                            "i;" :textsubjects-container-inner}}})

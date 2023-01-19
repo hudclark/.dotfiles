@@ -29,7 +29,9 @@
 
 		  ;; status messages
                   (use :j-hui/fidget.nvim
-		       {:config #((. (require :fidget) :setup))})
+		       {:config (fn []
+                                  (let [fidget (require :fidget)]
+                                    (fidget.setup {:text {:spinner :dots}})))})
 
                   (use :scalameta/nvim-metals
                        {:requires [:nvim-lua/plenary.nvim
@@ -59,9 +61,12 @@
                                    :hrsh7th/cmp-buffer
                                    :saadparwaiz1/cmp_luasnip
                                    :onsails/lspkind.nvim]})
+
                   ;; Treesitter
                   (use :nvim-treesitter/nvim-treesitter
-                       {:run ":TSUpdate"})
+                       {:run ":TSUpdate"
+                        ;;:requires [:RRethy/nvim-treesitter-textsubjects]})
+                        })
 
                   ;; GRPC
                   (use :hudclark/grpc-nvim
@@ -88,6 +93,11 @@
 
                   (use :ggandor/leap.nvim
 		       {:config #((. (require :leap) :add_default_mappings))})
+
+                  (use :ggandor/leap-ast.nvim
+                       {:config (fn []
+                                  (let [leap-ast (require :leap-ast)]
+                                    (vim.keymap.set [:n :x :o] :<leader>t #(leap-ast.leap))))})
 
                   (use :kylechui/nvim-surround
                        {:config #((. (require :nvim-surround) :setup) {})})
