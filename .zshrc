@@ -135,3 +135,8 @@ if [ -n "$(command -v zoom)" ]; then
     rm -f "$(xdg-user-dir DOWNLOAD)"/zoom_amd64.deb
   }
 fi
+
+# >>> scala-cli completions >>>
+fpath=("/home/hudson/.local/share/scalacli/completions/zsh" $fpath)
+compinit
+# <<< scala-cli completions <<<
