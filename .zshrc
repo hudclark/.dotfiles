@@ -108,6 +108,7 @@ source $ZSH/oh-my-zsh.sh
 alias vim="nvim.appimage"
 alias nvim="nvim.appimage"
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias avro='java -jar ~/avro-tools-1.11.1.jar'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

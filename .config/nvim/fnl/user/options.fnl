@@ -53,4 +53,5 @@
 (vim.filetype.add {:extension {:conf :dosini
                                :avsc :json
                                :schema :json
+                               :grpc :javascript
                                :peg :go}})
