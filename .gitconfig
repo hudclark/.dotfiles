@@ -2,11 +2,11 @@
 	excludesfile = /home/hudson/.gitignore
 	editor = nvim.appimage
 [alias]
+	recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) (%(color:green)%(committerdate:short)%(color:reset))'
 	st = status
 	ch = checkout
 	cm = commit -m
 	brm = branch -m
-        recent = for-each-ref --sort=-committerdate refs/heads/
 [merge]
   tool = vimdiff
 [mergetool]
