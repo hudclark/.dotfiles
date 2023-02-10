@@ -61,46 +61,65 @@
 (lsp-symbol :Information :)
 (lsp-symbol :Hint :💡)
 (lsp-symbol :Info :💡)
-(lsp-symbol :Warning :)
+(lsp-symbol :Warn :)
 
 
 ;; Code Actions
 ;; Inspiration from: https://github.com/kosayoda/nvim-lightbulb/blob/master/lua/nvim-lightbulb/init.lua
+(fn find [predicate seq]
+  "Returns the first element that matches pred, nil otherwise"
+  (var result false)
+  (each [_ value (pairs seq) &until result]
+    (set result (predicate value)))
+  (or result nil))
+
 (fn set-code-action-sign [line bufnr]
   "Set the buffer's code action sign to line, or remove if nil"
-  (let [old vim.b.code-action-sign]
+  (let [old vim.b.code-action-sign
+	group :code-action-sign]
     (when (not= old line)
       ;; Remove old sign, if it was set
       (when old
-        (vim.fn.sign_unplace :code-action-sign {:id old : bufnr}))
-      ;; Add new sign, if it is set
+        (vim.fn.sign_unplace group {:id old : bufnr}))
+      ;; Add new sign, if it is set.
       (when line
-	(vim.fn.sign_place line :code-action-sign :DiagnosticSignHint bufnr {:lnum line}))
+	(vim.fn.sign_place line group :DiagnosticSignHint bufnr {:lnum line}))
+      ;; Store the current sign for this buffer.
       (tset vim.b :code-action-sign line))))
 
 (fn supports-code-actions []
   "Returns true if the buffer has any clients which support textDocument/codeAction"
-  (var supported false)
-  (each [_ client (ipairs (vim.lsp.buf_get_clients)) &until supported]
-    (set supported (client.supports_method :textDocument/codeAction)))
-  supported)
+  (find (fn [client]
+	  (client.supports_method :textDocument/codeAction))
+        (vim.lsp.buf_get_clients)))
 
-(fn check-code-actions []
+(fn add-code-actions []
   "Checks the current line for available code actions, adding a sign if found"
   (let [diagnostics (vim.lsp.diagnostic.get_line_diagnostics)
         params (vim.lsp.util.make_range_params)
 	bufnr (vim.api.nvim_get_current_buf)
 	line (+ 1 params.range.start.line)]
     (tset params :context {: diagnostics})
-    (vim.lsp.buf_request 0 :textDocument/codeAction params
-			 (fn [_ actions ]
-			   (if actions
-			       (set-code-action-sign line bufnr)
-			       (set-code-action-sign nil bufnr))))))
+    (vim.lsp.buf_request_all 0 :textDocument/codeAction params
+			 (fn [responses]
+			   (set-code-action-sign
+			     ;; Set the line if there are any clients that returned a code action,
+			     ;; nil otherwise.
+			     (find #(-?> $1
+					 ;; Get result key of response
+					 (. :result)
+					 ;; Get length of result
+					 (length)
+					 ;; Must be non-empty
+					 (not= 0)
+					 ;; Return line if true
+					 (and line))
+				   responses)
+			     bufnr)))))
 
 (vim.api.nvim_create_autocmd [:CursorHold :CursorHoldI]
 			     {:pattern :*
-			      :callback #(when (supports-code-actions) (check-code-actions))})
+			      :callback #(when (supports-code-actions) (add-code-actions))})
 ;; </code actions>
 
 ;; Keymaps
