@@ -26,6 +26,7 @@
 
                   ;; LSP plugins
                   (use :neovim/nvim-lspconfig)
+                  (use :mfussenegger/nvim-jdtls)
 
 		  ;; status messages
                   (use :j-hui/fidget.nvim

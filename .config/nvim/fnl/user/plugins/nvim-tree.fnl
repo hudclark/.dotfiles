@@ -1,11 +1,11 @@
 (local nvim-tree (require :nvim-tree))
 
 (nvim-tree.setup {:open_on_setup true
+		  :reload_on_bufenter true
 		  :diagnostics {:enable true}
 		  :filesystem_watchers {:enable true}
 		  :update_focused_file {:enable true}
 		  :view {:adaptive_size true
-		         :signcolumn :no
 			 :mappings {:list [{:key :i :action :split}
 					   {:key :s :action :vsplit}
 					   {:key :d :action :trash}]}}
