@@ -27,6 +27,8 @@
                   ;; LSP plugins
                   (use :neovim/nvim-lspconfig)
                   (use :mfussenegger/nvim-jdtls)
+                  (use :mfussenegger/nvim-dap)
+                  (use :rcarriga/nvim-dap-ui)
 
 		  ;; status messages
                   (use :j-hui/fidget.nvim
@@ -106,10 +108,9 @@
 		  ;; break formatting and make it easy to append to this
 		  ))
 
-(require :user.plugins.cmp)
+(require :cmp)
 (require :user.plugins.lualine)
 (require :user.plugins.telescope)
 (require :user.plugins.nvim-tree)
 (require :user.plugins.treesitter)
-(require :user.plugins.metals)
 (require :user.plugins.lsp)

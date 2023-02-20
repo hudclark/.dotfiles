@@ -27,6 +27,9 @@
 (tset metals-config :capabilities
       ((. (require :cmp_nvim_lsp) :default_capabilities)))
 
+(tset metals-config :on_attach (fn [client bufnr]
+                                 (metals.setup_dap)))
+
 ;; Set up trigger to start metals
 (local nvim-metals-group
        (vim.api.nvim_create_augroup :nvim-metals {:clear true}))
