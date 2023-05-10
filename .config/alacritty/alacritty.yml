@@ -52,6 +52,8 @@ font:
     family: "Hack Nerd Font"
   bold:
     family: "Hack Nerd Font"
+    style: Bold
   italic:
     family: "Hack Nerd Font"
+    style: Italic
   size: 10

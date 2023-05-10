@@ -20,8 +20,8 @@
 (vim.keymap.set :s :<C-l> #(luasnip.jump 1) {:noremap true})
 
 ;; Configure CMP
-(cmp.setup {:sources (cmp.config.sources [{:name :vsnip}
-                                          {:name :copilot}
+(cmp.setup {:sources (cmp.config.sources [{:name :copilot}
+                                          ;; {:name :vsnip}
                                           {:name :nvim_lsp}]
                                          [{:name :buffer :keyword_length 4}])
             :window {:documentation (cmp.config.window.bordered)}

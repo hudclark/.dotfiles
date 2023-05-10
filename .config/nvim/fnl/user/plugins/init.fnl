@@ -79,7 +79,9 @@
                   (use :ellisonleao/gruvbox.nvim
 		       {:config (fn []
 				  (let [gruvbox (require :gruvbox)]
-				    (gruvbox.setup {:italic false :contrast :soft}))
+				    (gruvbox.setup {:italic {:comments true
+                                                             :strings false}
+                                                    :contrast :soft}))
 				  (vim.cmd "colorscheme gruvbox"))})
 
                   ;; Lualine
@@ -97,18 +99,19 @@
                   (use :ggandor/leap.nvim
 		       {:config #((. (require :leap) :add_default_mappings))})
 
-                  (use :ggandor/leap-ast.nvim
-                       {:config (fn []
-                                  (let [leap-ast (require :leap-ast)]
-                                    (vim.keymap.set [:n :x :o] :<leader>t #(leap-ast.leap))))})
-
                   (use :kylechui/nvim-surround
                        {:config #((. (require :nvim-surround) :setup) {})})
+
+
+                  (use :ellisonleao/glow.nvim
+                       {:config (fn []
+                                  (let [glow (require :glow)]
+                                    (glow.setup {})))})
 
 		  ;; break formatting and make it easy to append to this
 		  ))
 
-(require :cmp)
+(require :user.plugins.cmp)
 (require :user.plugins.lualine)
 (require :user.plugins.telescope)
 (require :user.plugins.nvim-tree)

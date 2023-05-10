@@ -34,7 +34,7 @@
 (local nvim-metals-group
        (vim.api.nvim_create_augroup :nvim-metals {:clear true}))
 (vim.api.nvim_create_autocmd :FileType
-                             {:pattern [:scala :sbt]
+                             {:pattern [:scala :sbt :sc]
                               :callback #(metals.initialize_or_attach metals-config)
                               :group nvim-metals-group})
 

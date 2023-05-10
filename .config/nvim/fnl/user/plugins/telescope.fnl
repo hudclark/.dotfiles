@@ -11,3 +11,4 @@
 (vim.keymap.set :n :gd builtin.lsp_definitions {:noremap true})
 (vim.keymap.set :n :gr builtin.lsp_references {:noremap true})
 (vim.keymap.set :n :<leader>o builtin.lsp_document_symbols {:noremap true})
+(vim.keymap.set :n :<leader>t builtin.resume {:noremap true})

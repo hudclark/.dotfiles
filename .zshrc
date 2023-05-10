@@ -1,6 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=/usr/local/share/scala-2.13.3/bin:/usr/local/go/bin:/home/hudson/.local/share/coursier/bin:/home/hudson/go/bin:/home/hudson/bin:$PATH
 
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH=/usr/lib/jvm/graalvm-ce-java11-20.1.0/bin:$PATH
 export JAVA_HOME=/usr/lib/jvm/graalvm-ce-java11-20.1.0
 export SCALA_HOME=/usr/local/share/scala-2.13.3
@@ -17,6 +18,14 @@ export EDITOR="nvim.appimage"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+fpath+=("$HOME/.nvm/versions/node/v17.4.0/lib/node_modules/pure-prompt/functions")
+autoload -U promptinit; promptinit
+prompt pure
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -76,7 +85,9 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions fzf-tab)
+plugins=(git zsh-autosuggestions vi-mode)
+
+VI_MODE_SET_CURSOR=true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -113,14 +124,6 @@ alias avro='java -jar ~/avro-tools-1.11.1.jar'
 hex-to-base64 () {
   echo -n "$1" | xxd -r -p - | base64
 }
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-fpath+=("$HOME/.nvm/versions/node/v17.4.0/lib/node_modules/pure-prompt/functions")
-autoload -U promptinit; promptinit
-prompt pure
 
 source <(kubectl completion zsh)
 
