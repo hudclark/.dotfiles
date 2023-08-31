@@ -1,6 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=/usr/local/share/scala-2.13.3/bin:/usr/local/go/bin:/home/hudson/.local/share/coursier/bin:/home/hudson/go/bin:/home/hudson/bin:$PATH
 
+export PATH="/home/hudson/.local/bin:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH=/usr/lib/jvm/graalvm-ce-java11-20.1.0/bin:$PATH
 export JAVA_HOME=/usr/lib/jvm/graalvm-ce-java11-20.1.0
@@ -119,7 +120,10 @@ source $ZSH/oh-my-zsh.sh
 alias vim="nvim.appimage"
 alias nvim="nvim.appimage"
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias avro='java -jar ~/avro-tools-1.11.1.jar'
+alias avro='java -jar ~/avro-tools-1.11.2.jar'
+
+# Add an alias for taskfile dev
+alias task-dev="go run ~/task/cmd/task"
 
 hex-to-base64 () {
   echo -n "$1" | xxd -r -p - | base64
@@ -132,17 +136,6 @@ eval "$(jenv init -)"
 # jenv enable-plugin export
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# https://askubuntu.com/questions/1363356/update-zoom-at-xubuntu-20-04-focal-fossa
-# zoom update
-if [ -n "$(command -v zoom)" ]; then
-  zoom-update() {
-    echo "Checking new version availability..."
-    wget -nv -O "$(xdg-user-dir DOWNLOAD)"/zoom_amd64.deb 'https://us02web.zoom.us/client/latest/zoom_amd64.deb' &> /dev/null
-    sudo dpkg --skip-same-version -i "$(xdg-user-dir DOWNLOAD)"/zoom_amd64.deb
-    rm -f "$(xdg-user-dir DOWNLOAD)"/zoom_amd64.deb
-  }
-fi
 
 # >>> scala-cli completions >>>
 fpath=("/home/hudson/.local/share/scalacli/completions/zsh" $fpath)

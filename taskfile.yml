@@ -1,0 +1,15 @@
+version: '3'
+
+tasks:
+
+  # https://askubuntu.com/questions/1363356/update-zoom-at-xubuntu-20-04-focal-fossa
+  update-zoom:
+    desc: Update zoom version
+    preconditions:
+      - command -v zoom
+    cmds:
+      - wget -nv -O "$(xdg-user-dir DOWNLOAD)"/zoom_amd64.deb 'https://us02web.zoom.us/client/latest/zoom_amd64.deb'
+      - sudo dpkg --skip-same-version -i "$(xdg-user-dir DOWNLOAD)"/zoom_amd64.deb
+      - rm -f "$(xdg-user-dir DOWNLOAD)"/zoom_amd64.deb
+
+

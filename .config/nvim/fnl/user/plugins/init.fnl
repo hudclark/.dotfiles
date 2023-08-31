@@ -96,8 +96,15 @@
 		       {:config #((. (require :gitsigns) :setup))})
 
 
-                  (use :ggandor/leap.nvim
-		       {:config #((. (require :leap) :add_default_mappings))})
+                  (use :folke/flash.nvim
+		       {:config (fn []
+                                  (let [flash (require :flash)]
+                                    (flash.setup {:highlight {:label {:before true :after false}}
+                                                  :modes {:search {:enabled false}
+                                                          :char {:jump_labels true}}})
+                                    ;; turn off flash for regular search
+                                    (vim.api.nvim_set_hl 0 :FlashLabel {:link :DiffDelete :default true})
+                                    (vim.keymap.set :n :s flash.jump {:noremap true})))})
 
                   (use :kylechui/nvim-surround
                        {:config #((. (require :nvim-surround) :setup) {})})
@@ -107,6 +114,12 @@
                        {:config (fn []
                                   (let [glow (require :glow)]
                                     (glow.setup {})))})
+
+                  (use :ray-x/go.nvim
+                       {:requires [:ray-x/guihua.lua]
+                        :config (fn []
+                                  (let [go (require :go)]
+                                    (go.setup {})))})
 
 		  ;; break formatting and make it easy to append to this
 		  ))
