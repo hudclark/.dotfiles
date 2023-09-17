@@ -1,38 +1,24 @@
 (local cmp (require :cmp))
-(local luasnip (require :luasnip))
 (local lspkind (require :lspkind))
-
-;; Configure luasnip
-
-(let [types (require :luasnip.util.types)
-      loader (require :luasnip.loaders.from_vscode)]
-  (luasnip.config.setup {:history true
-                         :updateevents "TextChanged,TextChangedI"
-                         :enable_autosnippets true
-                         :ext_opts {[types.choiceNode] {:active {:virt_text [[:Choice
-                                                                              :Comment]]}}}})
-  (loader.lazy_load))
-
-;; Luasnip keymaps
-(vim.keymap.set :i :<C-h> #(luasnip.jump -1) {:noremap true})
-(vim.keymap.set :s :<C-h> #(luasnip.jump -1) {:noremap true})
-(vim.keymap.set :i :<C-l> #(luasnip.jump 1) {:noremap true})
-(vim.keymap.set :s :<C-l> #(luasnip.jump 1) {:noremap true})
+(local copilot-suggestion (require :copilot.suggestion))
 
 ;; Configure CMP
-(cmp.setup {:sources (cmp.config.sources [{:name :copilot}
-                                          ;; {:name :vsnip}
-                                          {:name :nvim_lsp}]
-                                         [{:name :buffer :keyword_length 4}])
-            :window {:documentation (cmp.config.window.bordered)}
-            :snippet {:expand #(luasnip.lsp_expand $1.body)}
+(cmp.setup {:sources (cmp.config.sources [;;{:name :copilot}
+                                          {:name :nvim_lsp}])
+                                         ;;[{:name :buffer :keyword_length 4}])
+            ;; :window {:documentation (cmp.config.window.bordered)}
+            :snippet {:expand (fn [args] ((. vim.fn "vsnip#anonymous") args.body))}
             :mapping {:<Tab> (cmp.mapping (fn [fallback]
-                                              (if (cmp.visible)
+                                              (if (copilot-suggestion.is_visible)
+                                                  (copilot-suggestion.accept)
+                                                  (cmp.visible)
                                                   (cmp.select_next_item)
                                                   (cmp.complete)))
                                             [:i :s])
                       :<S-Tab> (cmp.mapping (fn [fallback]
-                                                (if (cmp.visible)
+                                                (if (copilot-suggestion.is_visible)
+                                                    (copilot-suggestion.next)
+                                                    (cmp.visible)
                                                     (cmp.select_prev_item)
                                                     (fallback)))
                                               [:i :s])
@@ -40,6 +26,6 @@
                                                     :behavior cmp.ConfirmBehavior.Replace})}
             :preselect cmp.PreselectMode.None
             :formatting {:format (lspkind.cmp_format {:mode :symbol
-                                                      :maxwidth 50
-                                                      :ellipsis_char "..."
-                                                      :symbol_map {:Copilot ""}})}})
+                                                    ;;:maxwidth 50
+                                                    :ellipsis_char "..."
+                                                    :symbol_map {:Copilot ""}})}})

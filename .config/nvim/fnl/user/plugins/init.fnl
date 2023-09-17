@@ -15,6 +15,16 @@
 		  ;; Hotpot
 		  (use :rktjmp/hotpot.nvim)
 
+                  ;; Colors, Highlighting
+                  (use :ellisonleao/gruvbox.nvim
+		       {:config (fn []
+				  (let [gruvbox (require :gruvbox)]
+				    (gruvbox.setup {:italic {:comments true
+                                                             :strings false}
+                                                    :palette_overrides {:neutral_red :#fb4934}
+                                                    :contrast :soft}))
+				  (vim.cmd "colorscheme gruvbox"))})
+
                   ;; Telescope
                   (use :nvim-telescope/telescope.nvim
                        {:requires [:nvim-lua/plenary.nvim]})
@@ -43,18 +53,36 @@
                   ;; Completion
                   ;; lua copilot impl
                   (use :zbirenbaum/copilot.lua
-                       {:event :VimEnter
-                        :config #(vim.defer_fn #((. (require :copilot) :setup))
-                                               100)})
+                       {;;:event :InsertEnter
+                        :config (fn []
+                                  (let [copilot (require :copilot)
+                                        suggestion (require :copilot.suggestion)
+                                        cmp (require :cmp)]
+                                    (copilot.setup {:suggestion {:enabled true
+                                                                 :auto_trigger true
+                                                                 :accept false}
+                                                    :panel {:enabled false}})
+
+                                    ;; tab completion is set up in cmp.fnl
+                                    ;; <TAB> will take the copilot suggestion
+                                    ;; <S-TAB> will cycle through the copilot suggestions
+
+                                    ;; We also set up taking suggestions a line at a time here.
+                                    ;; (vim.keymap.set :i :<S-CR> suggestion.accept_line)
+
+                                    ;; hide copilot when cmp is open
+                                    (cmp.event:on :menu_opened #(tset vim.b :copilot_suggestion_hidden true))
+                                    (cmp.event:on :menu_closed #(tset vim.b :copilot_suggestion_hidden false))
+
+                                    ))})
 
                   ;; cmp shim for copilot
-                  (use :zbirenbaum/copilot-cmp
-                       {:after :copilot.lua
-                        :config #((. (require :copilot_cmp) :setup))})
+                  ;;(use :zbirenbaum/copilot-cmp
+                       ;;{:after :copilot.lua
+                        ;;:config (fn []
+                                  ;;(let copilot_cmp (require :copilot_cmp)
+                                    ;;(copilot_cmp.setup {})))})
 
-		  ;; luasnip
-		  (use :L3MON4D3/LuaSnip)
-		  (use :rafamadriz/friendly-snippets)
 
                   ;; cmp
                   (use :hrsh7th/nvim-cmp
@@ -62,7 +90,6 @@
                                    :hrsh7th/vim-vsnip
                                    :hrsh7th/cmp-nvim-lsp
                                    :hrsh7th/cmp-buffer
-                                   :saadparwaiz1/cmp_luasnip
                                    :onsails/lspkind.nvim]})
 
                   ;; Treesitter
@@ -74,15 +101,6 @@
                   ;; GRPC
                   (use :hudclark/grpc-nvim
                        {:requires [:nvim-lua/plenary.nvim]})
-
-                  ;; Colors, Highlighting
-                  (use :ellisonleao/gruvbox.nvim
-		       {:config (fn []
-				  (let [gruvbox (require :gruvbox)]
-				    (gruvbox.setup {:italic {:comments true
-                                                             :strings false}
-                                                    :contrast :soft}))
-				  (vim.cmd "colorscheme gruvbox"))})
 
                   ;; Lualine
                   (use :nvim-lualine/lualine.nvim
@@ -99,12 +117,13 @@
                   (use :folke/flash.nvim
 		       {:config (fn []
                                   (let [flash (require :flash)]
-                                    (flash.setup {:highlight {:label {:before true :after false}}
+                                    (flash.setup {:label {:before true :after false}
                                                   :modes {:search {:enabled false}
                                                           :char {:jump_labels true}}})
                                     ;; turn off flash for regular search
                                     (vim.api.nvim_set_hl 0 :FlashLabel {:link :DiffDelete :default true})
-                                    (vim.keymap.set :n :s flash.jump {:noremap true})))})
+                                    (vim.keymap.set :n :s flash.jump {:noremap true})
+                                    (vim.keymap.set :o :r flash.remote {:noremap true})))})
 
                   (use :kylechui/nvim-surround
                        {:config #((. (require :nvim-surround) :setup) {})})
@@ -121,6 +140,9 @@
                                   (let [go (require :go)]
                                     (go.setup {})))})
 
+                  (use :akinsho/toggleterm.nvim)
+
+
 		  ;; break formatting and make it easy to append to this
 		  ))
 
@@ -130,3 +152,4 @@
 (require :user.plugins.nvim-tree)
 (require :user.plugins.treesitter)
 (require :user.plugins.lsp)
+(require :user.plugins.toggleterm)

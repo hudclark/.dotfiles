@@ -141,3 +141,10 @@ eval "$(jenv init -)"
 fpath=("/home/hudson/.local/share/scalacli/completions/zsh" $fpath)
 compinit
 # <<< scala-cli completions <<<
+
+
+# Load pyenv automatically by appending
+# the following to
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

@@ -1,7 +1,7 @@
 (local noremaps [;; Double press j to escape
                  [:i :jj :<Esc>]
                  ;; Escape from terminal mode
-                 [:t :<Esc> "<C-\\><C-n>"]
+                 ;; [:t :<Esc> "<C-\\><C-n>"]
                  ;; Normal motion works across line breaks
                  [:n :j :gj]
                  [:n :k :gk]
