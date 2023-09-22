@@ -76,6 +76,8 @@
 
                                     ))})
 
+                  (use :folke/trouble.nvim)
+
                   ;; cmp shim for copilot
                   ;;(use :zbirenbaum/copilot-cmp
                        ;;{:after :copilot.lua
@@ -142,7 +144,6 @@
 
                   (use :akinsho/toggleterm.nvim)
 
-
 		  ;; break formatting and make it easy to append to this
 		  ))
 
@@ -153,3 +154,4 @@
 (require :user.plugins.treesitter)
 (require :user.plugins.lsp)
 (require :user.plugins.toggleterm)
+(require :user.plugins.trouble)

@@ -23,7 +23,8 @@
 
 (tset metals-config :settings {:showImplicitArguments true
                                :showImplicitConversionsAndClasses true
-                               :showInferredType true})
+                               :showInferredType true
+                               :enableSemanticHighlighting false})
 (tset metals-config :capabilities
       ((. (require :cmp_nvim_lsp) :default_capabilities)))
 

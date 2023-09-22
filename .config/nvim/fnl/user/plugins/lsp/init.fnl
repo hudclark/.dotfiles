@@ -27,6 +27,9 @@
 ;; Golang
 (lspconfig.gopls.setup {})
 
+;; Protobuf
+(lspconfig.bufls.setup {})
+
 ;; Java
 
 (fn start-jdtls []
