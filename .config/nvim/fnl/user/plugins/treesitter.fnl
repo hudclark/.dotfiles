@@ -1,4 +1,13 @@
 (local ts-configs (require :nvim-treesitter.configs))
+(local parsers (require :nvim-treesitter.parsers))
+
+(local parser-config (parsers.get_parser_configs))
+
+;; Add nushell support
+(tset parser-config :nu {:install_info {:url :https://github.com/nushell/tree-sitter-nu
+                                        :files [:src/parser.c]
+                                        :branch :main}
+                         :filetype :nu})
 
 (ts-configs.setup {:sync_install false
                    :auto_install true
