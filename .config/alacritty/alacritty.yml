@@ -49,15 +49,12 @@ colors: *gruvbox_dark
 
 font:
   normal:
-    family: "Hack Nerd Font"
+    family: "Hack"
     style: Regular
   bold:
-    family: "Hack Nerd Font"
+    family: "Hack"
     style: Bold
   italic:
-    family: "Hack Nerd Font"
+    family: "Hack"
     style: Italic
   size: 10
-
-shell:
-  program: /usr/local/bin/nu
