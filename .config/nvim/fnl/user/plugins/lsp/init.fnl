@@ -4,7 +4,8 @@
 (local lspconfig (require :lspconfig))
 
 ;; General
-;; Disable underline for diagnostics. We already have signs and virtual text
+(tset vim.lsp.handlers :textDocument/hover
+  (vim.lsp.with vim.lsp.handlers.hover {:border :single}))
 
 ;; Keymaps
 (local mappings [[:n :K "<cmd>lua vim.lsp.buf.hover()<CR>"]
@@ -29,6 +30,10 @@
 
 ;; Protobuf
 (lspconfig.bufls.setup {})
+
+;; rust
+(lspconfig.rust_analyzer.setup {})
+  ;;{:cmd [:rustup :run :stable :rust-analyzer]})
 
 ;; Java
 

@@ -44,7 +44,8 @@
                   (use :j-hui/fidget.nvim
 		       {:config (fn []
                                   (let [fidget (require :fidget)]
-                                    (fidget.setup {:text {:spinner :dots}})))})
+                                    ; (fidget.setup {:text {:spinner :dots}})))})
+                                    (fidget.setup {})))})
 
                   (use :scalameta/nvim-metals
                        {:requires [:nvim-lua/plenary.nvim

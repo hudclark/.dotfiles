@@ -33,11 +33,12 @@ $env.PATH = ($env.PATH | split row (char esep) | prepend [
   $"($env.HOME)/.jenv/bin"
   $"($env.HOME)/.jenv/shims"
   $"($env.HOME)/.config/fnm"
+  $"($env.HOME)/.cargo/bin"
 ])
 
-$env.EDITOR = 'nvim.appimage'
+$env.JAVA_HOME = (jenv prefix)
 
-# $env.XDG_DATA_HOME = '~/.local/share'
+$env.EDITOR = 'nvim.appimage'
 
 # Load node env from fnm
 load-env (
