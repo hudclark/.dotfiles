@@ -58,6 +58,3 @@ font:
     family: "Hack Nerd Font"
     style: Italic
   size: 10
-
-shell:
-  program: /usr/local/bin/nu

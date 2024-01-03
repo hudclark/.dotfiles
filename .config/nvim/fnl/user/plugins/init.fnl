@@ -45,7 +45,7 @@
 		       {:config (fn []
                                   (let [fidget (require :fidget)]
                                     ; (fidget.setup {:text {:spinner :dots}})))})
-                                    (fidget.setup {})))})
+                                    (fidget.setup {:integration {:nvim-tree {:enable false}}})))})
 
                   (use :scalameta/nvim-metals
                        {:requires [:nvim-lua/plenary.nvim
@@ -145,6 +145,8 @@
 
                   (use :akinsho/toggleterm.nvim)
 
+                  (use :pwntester/octo.nvim)
+
 		  ;; break formatting and make it easy to append to this
 		  ))
 
@@ -156,3 +158,4 @@
 (require :user.plugins.lsp)
 (require :user.plugins.toggleterm)
 (require :user.plugins.trouble)
+(require :user.plugins.octo)

@@ -26,28 +26,19 @@ $env.NU_PLUGIN_DIRS = [
 
 $env.PATH = ($env.PATH | split row (char esep) | prepend [
   '/usr/local/go/bin'
+  '/usr/local/bin'
   $"($env.HOME)/.local/share/coursier/bin"
   $"($env.HOME)/go/bin/"
   $"($env.HOME)/bin"
   $"($env.HOME)/local/.bin"
-  $"($env.HOME)/.jenv/bin"
-  $"($env.HOME)/.jenv/shims"
   $"($env.HOME)/.config/fnm"
   $"($env.HOME)/.cargo/bin"
+  $"($env.HOME)/google-cloud-sdk/bin"
+  #'/home/linuxbrew/.linuxbrew/bin'
+  #'/home/linuxbrew/.linuxbrew/sbin'
+  #$"($env.HOME)/.pyenv/shims"
 ])
 
-$env.JAVA_HOME = (jenv prefix)
+$env.JAVA_HOME = (cs java-home)
 
-$env.EDITOR = 'nvim.appimage'
-
-# Load node env from fnm
-load-env (
-  fnm env --shell bash
-    | lines
-    | str replace 'export ' ''
-    | str replace -a '"' ''
-    | split column '='
-    | rename name value
-    |   where name != "FNM_ARCH" and name != "PATH"
-    | reduce -f {} {|it, acc| $acc | upsert $it.name $it.value })
-$env.PATH = ($env.PATH | prepend $"($env.FNM_MULTISHELL_PATH)/bin")
+$env.EDITOR = 'nvim'

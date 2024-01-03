@@ -72,7 +72,7 @@ k9s:
       filterColor: *magenta
   views:
     charts:
-      bgColor: background
+      bgColor: *background
       defaultDialColors:
         - *blue
         - *red

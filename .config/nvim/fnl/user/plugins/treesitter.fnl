@@ -20,3 +20,6 @@
                                   :keymaps {"." :textsubjects-smart
                                             ";" :textsubjects-container-outer
                                             "i;" :textsubjects-container-inner}}})
+
+;; Support for octo
+(vim.treesitter.language.register :markdown :octo)
