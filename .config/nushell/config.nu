@@ -703,6 +703,3 @@ alias vim = nvim
 alias dotfiles = git $"--git-dir=($env.HOME)/.dotfiles/" $"--work-tree=($env.HOME)"
 alias lg-dotfiles = lazygit $"--git-dir=($env.HOME)/.dotfiles/" $"--work-tree=($env.HOME)"
 alias avro = java -jar ~/avro-tools-1.11.2.jar
-
-alias copy = xclip -sel clip
-alias paste = xclip -sel clip -o
