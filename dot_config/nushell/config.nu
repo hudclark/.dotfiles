@@ -700,6 +700,4 @@ $env.config = {
 
 # Aliases
 alias vim = nvim
-alias dotfiles = git $"--git-dir=($env.HOME)/.dotfiles/" $"--work-tree=($env.HOME)"
-alias lg-dotfiles = lazygit $"--git-dir=($env.HOME)/.dotfiles/" $"--work-tree=($env.HOME)"
 alias avro = java -jar ~/avro-tools-1.11.2.jar
