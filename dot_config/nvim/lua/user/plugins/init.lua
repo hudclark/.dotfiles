@@ -151,17 +151,45 @@ return {
       vim.keymap.set("n", "<leader>g", function()
         lazygit:toggle()
       end, {silent = true})
+
+      -- gh dash
+      local gh_dash = Terminal:new({
+        cmd = "gh dash",
+        dir = "git_dir",
+        direction = "float",
+        float_opts = {
+          border = "single",
+        },
+        hidden = true,
+        on_open = function(term)
+          vim.cmd("startinsert!")
+          vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+        end,
+        on_close = function(term)
+          vim.cmd("startinsert!")
+        end,
+      })
+
+      vim.keymap.set("n", "<leader>d", function()
+        gh_dash:toggle()
+      end, {silent = true})
     end
   },
 
   -- vim surround
   {
-    "kylechui/nvim-surround"
+    "kylechui/nvim-surround",
+    config = function()
+      require('nvim-surround').setup()
+    end
   },
 
   -- Gitsigns
   {
-    "lewis6991/gitsigns.nvim"
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require('gitsigns').setup()
+    end
   },
 
   -- Octo
@@ -407,6 +435,14 @@ return {
       vim.api.nvim_set_hl(0, "FlashLabel", {link = "DiffDelete", default = true})
       vim.keymap.set("n", "s", flash.jump, {noremap = true})
     end
+  },
+
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
   }
+
 
 }
