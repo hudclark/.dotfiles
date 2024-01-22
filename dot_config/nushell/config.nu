@@ -700,5 +700,5 @@ $env.config = {
 
 # Aliases
 alias vim = nvim
-alias avro = java -jar ~/avro-tools-1.11.2.jar
+alias avro = java -jar ~/avro-tools-1.11.3.jar
 alias lg-dotfiles = lazygit -p ~/.local/share/chezmoi
