@@ -302,6 +302,10 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    dependencies = {
+        -- NOTE: additional parser
+        { "nushell/tree-sitter-nu" },
+    },
     config = function()
       require("nvim-treesitter.configs").setup({
         auto_install = true,
@@ -449,7 +453,7 @@ return {
     config = function()
       vim.g.mkdp_theme = 'light'
     end
-  }
+  },
 
 
 }
