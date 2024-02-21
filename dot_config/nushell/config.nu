@@ -704,3 +704,14 @@ alias avro = java -jar ~/avro-tools-1.11.3.jar
 alias lg-dotfiles = lazygit -p ~/.local/share/chezmoi
 alias copy = wl-copy
 alias paste = wl-paste
+
+# Wrapper for yazi that changes the current working directory
+def --env ya [...args] {
+	let tmp = (mktemp -t "yazi-cwd.XXXXX")
+	yazi ...$args --cwd-file $tmp
+	let cwd = (open $tmp)
+	if $cwd != "" and $cwd != $env.PWD {
+		cd $cwd
+	}
+	rm -fp $tmp
+}
