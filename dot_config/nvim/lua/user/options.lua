@@ -49,3 +49,8 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "go",
   command = "setlocal sw=8"
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "proto",
+  command = "setlocal sw=2"
+})

@@ -262,6 +262,7 @@ return {
   },
 
   {
+    dependencies = { "tpope/vim-rhubarb" },
     "tpope/vim-fugitive"
   },
 
@@ -435,6 +436,9 @@ return {
         },
         modes = {
           search = {
+            enabled = false
+          },
+          char = {
             enabled = false
           }
         }
