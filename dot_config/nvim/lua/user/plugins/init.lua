@@ -197,8 +197,7 @@ return {
     "pwntester/octo.nvim",
     config = function()
       require("octo").setup({
-        use_local_fs = true,
-        picker = "fzf-lua"
+        use_local_fs = true
       })
 
       vim.api.nvim_create_user_command("Reviews", "Octo search is:pr is:open review-requested:@me archived:false", {})
@@ -266,26 +265,29 @@ return {
     "tpope/vim-fugitive"
   },
 
-  -- FZF
+  -- Telescope
   {
-    "ibhagwan/fzf-lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    'nvim-telescope/telescope.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+      'nvim-telescope/telescope-ui-select.nvim',
+    },
     keys = {
-      { "<c-p>", function() require("fzf-lua").files() end },
-      { "<leader>ff", function() require("fzf-lua").live_grep() end },
-      { "<leader>fh", function() require("fzf-lua").help_tags() end },
-      { "<leader>fr", function() require("fzf-lua").oldfiles() end },
-      { "gd", function() require("fzf-lua").lsp_definitions() end },
-      { "gr", function() require("fzf-lua").lsp_references() end },
-      { "<leader>o", function() require("fzf-lua").lsp_document_symbols() end },
-      { "<leader>t", function() require("fzf-lua").resume() end },
-      { "<leader>ca", function() require("fzf-lua").lsp_code_actions() end },
-      { "<leader>a", function() require("fzf-lua").lsp_document_diagnostics() end },
-      { "<leader>A", function() require("fzf-lua").lsp_workspace_diagnostics() end },
+      { "<c-p>", function() require("telescope.builtin").find_files() end },
+      { "<leader>ff", function() require("telescope.builtin").live_grep() end },
+      { "<leader>fh", function() require("telescope.builtin").help_tags() end },
+      { "<leader>fr", function() require("telescope.builtin").oldfiles() end },
+      { "gd", function() require("telescope.builtin").lsp_definitions() end },
+      { "gr", function() require("telescope.builtin").lsp_references() end },
+      { "<leader>o", function() require("telescope.builtin").lsp_document_symbols() end },
+      { "<leader>t", function() require("telescope.builtin").resume() end },
+      { "<leader>a", function() require("telescope.builtin").diagnostics({bufnr=0}) end },
     },
     config = function()
-      -- Use native fzf + fd + bat for faster performance :)
-      -- require("fzf-lua").setup({ "fzf-native" })
+      require('telescope').setup()
+      require('telescope').load_extension('fzf')
+      require("telescope").load_extension("ui-select")
     end
   },
 
@@ -333,6 +335,14 @@ return {
       -- format on save
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = "*",
+        callback = function()
+          vim.lsp.buf.format()
+        end
+      })
+
+      -- goimports on save
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*.go",
         callback = function()
           vim.lsp.buf.format()
         end
