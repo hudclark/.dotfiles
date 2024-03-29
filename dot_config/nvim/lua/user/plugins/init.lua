@@ -262,7 +262,16 @@ return {
 
   {
     dependencies = { "tpope/vim-rhubarb" },
-    "tpope/vim-fugitive"
+    "tpope/vim-fugitive",
+    config = function()
+      vim.api.nvim_create_user_command(
+        'Browse',
+        function (opts)
+          vim.fn.system { 'xdg-open', opts.fargs[1] }
+        end,
+        { nargs = 1 }
+      )
+    end
   },
 
   -- Telescope
@@ -468,6 +477,11 @@ return {
       vim.g.mkdp_theme = 'light'
     end
   },
+
+  {
+    'nvim-pack/nvim-spectre',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+  }
 
 
 }
