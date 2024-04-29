@@ -715,3 +715,58 @@ def --env ya [...args] {
 	}
 	rm -fp $tmp
 }
+
+
+
+
+
+
+
+
+
+
+# https://www.nushell.sh/cookbook/jq_v_nushell.html#appendix-custom-commands
+export def describe-primitive []: any -> string {
+  $in | describe | str replace --regex '<.*' ''
+}
+export def "flatten record-paths" [
+    --separator (-s): string = "."    # The separator to use when chaining paths
+] {
+    let input = $in
+
+    if ($input | describe) !~ "record" {
+        error make {msg: "The record-paths command expects a record"}
+    }
+
+    $input | flatten-record-paths $separator
+}
+
+def flatten-record-paths [separator: string, ctx?: string] {
+    let input = $in
+
+    match ($input | describe-primitive) {
+        "record" => {
+            $input
+            | items { |key, value|
+                  let path = if $ctx == null { $key } else { [$ctx $key] | str join $separator }
+                  {path: $path, value: $value}
+              }
+            | reduce -f [] { |row, acc|
+                  $acc
+                  | append ($row.value | flatten-record-paths $separator $row.path)
+                  | flatten
+              }
+        },
+        "list" => {
+            $input
+            | enumerate
+            | each { |e|
+                  {path: ([$ctx $e.index] | str join $separator), value: $e.item}
+              }
+        },
+        "table" | "block" | "closure" => { error make {msg: "Unexpected type"} },
+        _ => {
+            {path: $ctx, value: $input}
+        },
+    }
+}
