@@ -1,0 +1,36 @@
+# Languages, SDKs
+python3
+nodejs
+go
+openjdk11
+protoc
+protobuf-dev
+g++
+
+# Kubernetes, Cloud
+kubectl
+helm
+k9s
+kubectx
+
+# Tools
+nushell
+neovim
+lazygit
+ripgrep
+starship
+tmux
+jq
+yq
+coreutils
+docs
+make
+fd
+fzf
+github-cli
+bat
+chezmoi
+sd
+wl-clipboard
+gzip
+shadow

@@ -1,0 +1,17 @@
+FROM quay.io/toolbx-images/alpine-toolbox:edge
+
+RUN curl -fL "https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux-static.gz" | gzip -d > cs;
+
+COPY packages /
+RUN apk update && \
+  apk upgrade && \
+  grep -v '^#' /packages | xargs apk add
+RUN rm /packages
+
+RUN ln -fs /bin/sh /usr/bin/sh && \
+  ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/docker && \
+  ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/docker-compose && \
+  ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/flatpak && \
+  ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/podman && \
+  ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/rpm-ostree && \
+  ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/distrobox
