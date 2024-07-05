@@ -3,11 +3,16 @@ return {
     "nvim-neo-tree/neo-tree.nvim",
     keys = {
       {
-        "<leader>t",
+        "<leader>E",
         function()
           require("neo-tree.command").execute({ action = "focus", toggle = false })
         end,
         desc = "NeoTree Focus",
+      },
+    },
+    opts = {
+      filesystem = {
+        group_empty_dirs = true,
       },
     },
   },

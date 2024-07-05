@@ -11,3 +11,6 @@ vim.opt.conceallevel = 0
 -- Disable changing the LSP root directory
 -- https://github.com/LazyVim/LazyVim/discussions/2150#discussioncomment-7787591
 vim.g.root_spec = { "cwd" }
+
+-- Use bash for neotest stuff. It doesn't like nushell
+vim.o.shell = "bash"
