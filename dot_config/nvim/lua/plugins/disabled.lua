@@ -8,4 +8,6 @@ return {
   { "echasnovski/mini.pairs", enabled = false },
   -- prefer a different surround plugin
   { "echasnovski/mini.surround", enabled = false },
+  -- prefer leap
+  { "folke/flash.nvim", enabled = false },
 }
