@@ -4,3 +4,4 @@ metals.sbt
 .jvmopts
 
 scratch
+.aider*

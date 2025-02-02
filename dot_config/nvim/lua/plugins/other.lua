@@ -24,10 +24,6 @@ return {
   {
     "folke/flash.nvim",
     opts = {
-      label = {
-        before = true,
-        after = false,
-      },
       modes = {
         -- disable for searching
         search = {
@@ -47,9 +43,4 @@ return {
       require("nvim-surround").setup({})
     end,
   },
-  -- {
-  --   "m4xshen/hardtime.nvim",
-  --   dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-  --   opts = {},
-  -- },
 }

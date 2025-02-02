@@ -9,5 +9,5 @@ return {
   -- prefer a different surround plugin
   { "echasnovski/mini.surround", enabled = false },
   -- prefer leap
-  { "folke/flash.nvim", enabled = false },
+  -- { "folke/flash.nvim", enabled = false },
 }

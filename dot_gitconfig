@@ -1,6 +1,6 @@
 [core]
 	excludesfile = /home/hudson/.gitignore
-	editor = nvim.appimage
+	editor = nvim
 [alias]
 	recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) (%(color:green)%(committerdate:short)%(color:reset))'
 	st = status
