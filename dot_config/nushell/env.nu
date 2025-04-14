@@ -25,6 +25,7 @@ $env.NU_PLUGIN_DIRS = [
 ]
 
 $env.PATH = ($env.PATH | split row (char esep) | prepend [
+  '/opt/homebrew/bin'
   '/usr/local/go/bin'
   '/usr/local/bin'
   $"($env.HOME)/.local/share/coursier/bin"
@@ -39,6 +40,10 @@ $env.PATH = ($env.PATH | split row (char esep) | prepend [
   #$"($env.HOME)/.pyenv/shims"
 ])
 
-$env.JAVA_HOME = (cs java-home)
+#$env.JAVA_HOME = (cs java-home)
 
 $env.EDITOR = 'nvim'
+
+
+# zoxide setup
+zoxide init nushell | save -f ~/.zoxide.nu

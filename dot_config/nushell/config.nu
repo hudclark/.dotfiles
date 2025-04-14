@@ -725,11 +725,10 @@ $env.config = {
 
 # Aliases
 alias vim = nvim
-alias avro = java -jar ~/avro-tools-1.11.3.jar
+#alias avro = java -jar ~/avro-tools-1.11.3.jar
 alias lg-dotfiles = lazygit -p ~/.local/share/chezmoi
 alias copy = wl-copy
 alias paste = wl-paste
-alias task = go-task
 
 # Wrapper for yazi that changes the current working directory
 def --env ya [...args] {
@@ -742,3 +741,6 @@ def --env ya [...args] {
 	rm -fp $tmp
 }
 
+
+# zoxide setup
+source ~/.zoxide.nu
