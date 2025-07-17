@@ -17,6 +17,7 @@
 [right]>[down]
 [intl-\]>[lctrl]
 [vol+]>[kp-enter]
+[home]>[rwin]
 [kp-Y]>[6]
 [kp7]>[7]
 [kp8]>[8]
